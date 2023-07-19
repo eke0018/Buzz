@@ -1,15 +1,17 @@
 from flask import Flask, render_template, url_for, request
 from flask import Flask, render_template, url_for, flash, redirect
+from sqlalchemy import create_engine
 # this these are the forms that we are using
 from forms import RegistrationForm, NewsArticleForm, LoginForm
 from flask_behind_proxy import FlaskBehindProxy
 # for SQL database intergration using sqlalchemy
-from flask_sqlalchemy import SQLAlchemy
 # for dates
 from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
 from flask_login import LoginManager, current_user, logout_user, login_user
 from api_handler import get_pages
+import pymysql.cursors  
+from sqlalchemy import create_engine
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -19,9 +21,18 @@ from api_handler import get_pages
 app = Flask(__name__)
 
 # database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///store.db'
-db = SQLAlchemy(app)
+host = 'localhost'
+user = 'notladi'
+password = 'xeno6'
+port = 3306
+database = 'buzz'
 
+conn = pymysql.connect(host=host, user=user, passwd=password, db=database, charset='utf8')
+
+# Create an SQLAlchemy engine using the connection URI
+engine = create_engine('mysql+pymysql://{user}:{password}@{host}:{port}/{database}'.format(
+    user=user, password=password, host=host, port=port, database=database
+))
 # helps with redirects
 proxied = FlaskBehindProxy(app)
 
@@ -38,21 +49,21 @@ app.config['SECRET_KEY'] = '5a063a9f5f7a1769407c2c2066c5023e'
 # User model
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=False, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-    is_active = db.Column(db.Boolean, default=True)
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(20), unique=False, nullable=False)
+#     password = db.Column(db.String(60), nullable=False)
+#     is_active = db.Column(db.Boolean, default=True)
 
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+#     def __repr__(self):
+#         return f"User('{self.username}', '{self.email}')"
 
-    def get_id(self):
-        return str(self.id)
+#     def get_id(self):
+#         return str(self.id)
 
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
 # @login_manager.user_loader
@@ -67,19 +78,19 @@ def load_user(user_id):
 # newsArticle model
 
 
-class NewsArticle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False, unique=False)
-    content = db.Column(db.String(400), nullable=False, unique=False)
-    created_at = db.Column(db.DateTime, nullable=False,
-                           default=datetime.utcnow)
-    image = db.Column(db.String(255), nullable=False, unique=False)
+# class NewsArticle(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(100), nullable=False, unique=False)
+#     content = db.Column(db.String(400), nullable=False, unique=False)
+#     created_at = db.Column(db.DateTime, nullable=False,
+#                            default=datetime.utcnow)
+#     image = db.Column(db.String(255), nullable=False, unique=False)
 
-    def image_url(self):
-        return url_for('static', filename='images/' + self.image_filename)
+#     def image_url(self):
+#         return url_for('static', filename='images/' + self.image_filename)
 
-    def __repr__(self):
-        return f'<NewsArticle {self.id}>'
+#     def __repr__(self):
+#         return f'<NewsArticle {self.id}>'
 
 
 # routes section
