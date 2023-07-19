@@ -33,6 +33,12 @@ conn = pymysql.connect(host=host, user=user, passwd=password, db=database, chars
 engine = create_engine('mysql+pymysql://{user}:{password}@{host}:{port}/{database}'.format(
     user=user, password=password, host=host, port=port, database=database
 ))
+
+#  Connect to the database and test to see if it works on your system
+# with engine.connect() as conn:
+#     print("connection successful:", conn)
+# conn.close()
+
 # helps with redirects
 proxied = FlaskBehindProxy(app)
 
