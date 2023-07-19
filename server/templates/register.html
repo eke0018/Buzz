@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buzz</title>
+    <link rel="icon" type="image/x-icon" href="../images/buzzlogo.png" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{url_for('static', filename='images/buzzlogo.png')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/nav.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/cards.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/register.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <nav class="navbar navbar-expand-lg nav_container fixed-top">
+    <a href="{{url_for('home_page')}}">
+      <img src="../static/images/buzzlogo.png" alt="logo" class="nav_logo" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse navbar_contain" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('home_page')}}"
+            >Home <span class="sr-only">(current)</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('blogs')}}">Blogs</a>
+        </li>
+        {% if not current_user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('register')}}">SignIn</a>
+      </li>
+      {%endif%}
+     {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+        </li>
+      {%endif%}
+      <button class="nav_btn" onclick="ProfileBtn()">
+        <img src="../static/images/Profile.png" alt="profile" id="prof_img" />
+      </button>
+      </ul>
+      
+    </ul>
+  
+        
+    
+    </div>
+  </nav>
+    <div class="reg_sec">
+      <div class="reg_container">
+        <!-- <form action="" method="post" class="register_form">
+          <div class="register_info">
+            <input
+              placeholder="Name"
+              type="name"
+              name="name"
+              id="name"
+              required
+            />
+          </div>
+
+          <div class="register_info">
+            <input
+              placeholder="Password"
+              type="password"
+              name="password"
+              id="password"
+              required
+            />
+          </div>
+          <div class="register_info_topics">
+            <label for="topic">Choose a Topic:</label>
+            <select name="topic" id="topic" multiple>
+              <option value="volvo">Health</option>
+              <option value="saab">Politics</option>
+              <option value="opel">Popstarts</option>
+              <option value="audi">Movies</option>
+            </select>
+          </div>
+          <div class="register_info_btn">
+            <input type="submit" value="register!" />
+          </div>
+        </form> -->
+        <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <div class="form-group">
+              {{ form.username.label(class="form-control-label") }} {% if
+              form.username.errors %} {{ form.username(class="form-control
+              form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.username(class="form-control form-control-lg")
+              }} {% endif %}
+            </div>
+            <div class="form-group">
+              {{ form.password.label(class="form-control-label") }} {% if
+              form.password.errors %} {{ form.password(class="form-control
+              form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.password(class="form-control form-control-lg")
+              }} {% endif %}
+            </div>
+            <div class="form-group">
+              {{ form.confirm_password.label(class="form-control-label") }} {%
+              if form.confirm_password.errors %} {{
+              form.confirm_password(class="form-control form-control-lg
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.confirm_password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.confirm_password(class="form-control
+              form-control-lg") }} {% endif %}
+            </div>
+            <div class="register_info_topics">
+              <label for="topic">Choose a Topic:</label>
+              <select name="topic" id="topic" multiple>
+                <option value="volvo">Health</option>
+                <option value="saab">Politics</option>
+                <option value="opel">Popstarts</option>
+                <option value="audi">Movies</option>
+              </select>
+            </div>
+          </fieldset>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+        </form>
+        <div class="footer">
+          <img src="../static/images/buzzlogo.png" alt="logo" />
+          <p>© 2023 SEO. All rights reserved.</p>
+        </div>
+        <div class="reg_prompt">
+          <p class="prompt">Already have an account?</p>
+          <a href="{{url_for('login')}}" class="sign_up">Login</a>
+          <!-- <button
+            onclick="location.href = `{{nff}}`
+            class="sign_up"
+          >
+            Login
+          </button> -->
+        </div>
+      </div>
+      <div class="top_space_reg"></div>
+      <div class="page_header_reg">
+        <p>Register</p>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/web.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

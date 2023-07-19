@@ -1,0 +1,89 @@
+body {
+  height: max-content;
+}
+/* NavBar */
+.nav_logo {
+  width: 166px;
+  height: 58px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+.nav_container {
+  background-color: var(--navbar_bgcolor);
+  color: #f2f4ff;
+}
+
+.nav-link {
+  color: black;
+  margin-right: 5px !important;
+}
+
+.active a {
+  background-color: var(--cute_black);
+  color: var(--white);
+}
+
+.nav-link:hover {
+  background-color: var(--hover_bgcolor);
+  color: var(--white);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.collapse.show {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.collapse.show img {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.nav_btn {
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  background-color: #f2f4ff00;
+  margin-left: 85% !important;
+}
+
+.nav_btn:focus {
+  outline: none;
+}
+#prof_img {
+  width: 42px;
+  height: 39px;
+
+  object-fit: contain;
+}
+/* Footer */
+.footer {
+  width: 100%;
+  height: 185px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #93acb5;
+}
+.footer img {
+  width: 273px;
+  height: 99.207px;
+  object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
+}
+.footer p {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin-left: auto;
+  margin-right: auto;
+}

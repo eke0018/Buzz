@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {%block head%} {%endblock%} {% block body %}
+<h2>Login</h2>
+<form method="POST" action="{{ url_for('login') }}">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    {{ form.username.label(class="form-control-label") }} {{
+    form.username(class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ form.password.label(class="form-control-label") }} {{
+    form.password(class="form-control") }}
+  </div>
+  <div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
+</form>
+{% endblock %}

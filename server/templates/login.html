@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buzz</title>
+    <link rel="icon" type="image/x-icon" href="../static/images/buzzlogo.png" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{url_for('static', filename='images/buzzlogo.png')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/nav.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/cards.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/login.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg nav_container fixed-top">
+      <a href="{{url_for('home_page')}}">
+        <img src="../static/images/buzzlogo.png" alt="logo" class="nav_logo" />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse navbar_contain" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('home_page')}}"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('blogs')}}">Blogs</a>
+          </li>
+          {% if not current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('register')}}">SignIn</a>
+        </li>
+        {%endif%}
+       {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+          </li>
+        {%endif%}
+        <button class="nav_btn" onclick="ProfileBtn()">
+          <img src="../static/images/Profile.png" alt="profile" id="prof_img" />
+        </button>
+        </ul>
+        
+      </ul>
+    
+          
+      
+      </div>
+    </nav>
+    <div class="log_sec">
+      <div class="login_container">
+        <form method="POST" action="{{ url_for('login') }}">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.username.label(class="form-control-label") }} {{
+            form.username(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.password.label(class="form-control-label") }} {{
+            form.password(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+          </div>
+        </form>
+        <div class="log_prompt">
+          <p class="prompt">Don’t have an account?</p>
+          <a href="{{url_fo}}"><button onclick="Register()" class="sign_up">Sign up</button></a>
+        </div>
+      </div>
+      <div class="top_space_log"></div>
+      <div class="page_header_log">
+        <p>Login</p>
+      </div>
+      <img class="news_bg" src="../static/images/adminnews.jpg" alt="newsbg" />
+    </div>
+    <div class="footer">
+      <img src="../static/images/buzzlogo.png" alt="logo" />
+      <p>© 2023 SEO. All rights reserved.</p>
+    </div>
+    <script src="../js/web.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'myanmar-khyay-regular', sans-serif;
+    src: url('../fonts/mKhyay\-Regular.ttf');
+    /*URL to font*/
+}
+
+:root {
+    --white: #FFFFFF;
+    --navbar_bgcolor: #F2F4FF;
+    --active_color: #5f5556;
+    --hover_bgcolor: #756b6c;
+    --cute_black: #1e201d;
+    --section_break:#6C756B;
+    --footer_color: #93ACB5;
+}
