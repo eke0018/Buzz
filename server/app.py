@@ -172,6 +172,10 @@ def logout():
 def blogs():
     return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
 
+@app.route('/worlde')
+def worlde():
+    return render_template('worlde.html', subtitle='worlde', text='This is the worlde page')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5010)
