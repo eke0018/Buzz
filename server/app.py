@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
 from flask_login import LoginManager, current_user, logout_user, login_user
-from api_handler import get_pages
+from api_handler import get_pages, location, get_weather
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -87,8 +87,9 @@ class NewsArticle(db.Model):
 @app.route('/home')
 def home_page():
     pages = get_pages()
+    weather_data = get_weather()
     # return render_template('index.html', pages=pages)
-    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages)
+    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages, weather_data = weather_data)
 
 # to create more pages we basically define a url route and then define the function for that
 
