@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 # for dates
 from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
-from flask_login import LoginManager, current_user, logout_user, login_user
+from flask_login import LoginManager, current_user, logout_user, login_user, login_required, UserMixin
 from api_handler import get_pages, location, get_weather
 # import os
 # specifying tyhe directory names
@@ -49,6 +49,9 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.id)
+
+    def is_authenticated(self):
+        return True
 
 
 with app.app_context():
@@ -113,6 +116,7 @@ def register():
 
 
 @app.route('/profile')
+@login_required
 def profile():
     return render_template('profile.html', subtitle='profile_page', text='info on the user')
 
@@ -145,6 +149,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     # Log out the user
     logout_user()
@@ -152,7 +157,10 @@ def logout():
     return redirect(url_for('home_page'))
 
 # this handles everything with the news articles
+
+
 @app.route('/blogs', methods=['POST', 'GET'])
+@login_required
 def blogs():
     return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
 
