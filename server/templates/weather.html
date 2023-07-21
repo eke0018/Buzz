@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='css/weather.css')}}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather Information</h1>
+      <div class="weather-card">
+        <h2>{{ town }}, {{ country }}</h2>
+        <div class="weather-details">
+          <p><strong>Country:</strong> {{ weather_data[2] }}</p>
+          <!-- <p><strong>State:</strong> {{ weather_data[1] }}%</p> -->
+          <p><strong>Town:</strong> {{ weather_data[0] }}</p>
+          <p><strong>Temperature:</strong> {{ weather_data[3]}} °C</p>
+          <!-- <p><strong>Humidity:</strong> {{ weather_data[] }}%</p> -->
+          <p><strong>Conditions:</strong> {{ weather_data[4] }}</p>
+          <!-- <p><strong>Wind Speed:</strong> {{ wind_speed }} km/h</p>
+          <p><strong>Wind Direction:</strong> {{ wind_direction }}</p>
+          <p><strong>Pressure:</strong> {{ pressure }} hPa</p>
+          <p><strong>Visibility:</strong> {{ visibility }} km</p> -->
+          <!-- Add more weather details here if needed -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

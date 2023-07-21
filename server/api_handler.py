@@ -38,6 +38,7 @@ def get_pages():
 
     return pages
 
+
 def location():
     api_key = "34d1f9987459489c849fd220117949c1"
     url = f"https://api.ipgeolocation.io/ipgeo?apiKey={api_key}"
@@ -46,6 +47,7 @@ def location():
 
     return data['ip']
 
+
 def get_weather():
     api_key = "1e5def7da66f4898a5940134233006"
     ip_address = location()
@@ -53,6 +55,7 @@ def get_weather():
 
     response = requests.get(url)
     data = response.json()
+    print(data)
     weather = []
     weather.append(data['location']['name'])
     weather.append(data['location']['region'])
@@ -62,5 +65,5 @@ def get_weather():
     weather.append(data['current']['temp_f'])
     weather.append(data['current']['feelslike_f'])
     weather.append(data['current']['condition']['text'])
-    
+
     return weather

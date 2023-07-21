@@ -90,9 +90,9 @@ class NewsArticle(db.Model):
 @app.route('/home')
 def home_page():
     pages = get_pages()
-    weather_data = get_weather()
+
     # return render_template('index.html', pages=pages)
-    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages, weather_data = weather_data)
+    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages)
 
 # to create more pages we basically define a url route and then define the function for that
 
@@ -163,6 +163,21 @@ def logout():
 @login_required
 def blogs():
     return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
+
+
+@app.route('/weather')
+def weather():
+    weather_data = get_weather()
+    print(weather_data)
+    return render_template('weather.html', subtitle='Weather',
+                           text='This is the weather page',
+                           weather_data=weather_data)
+
+
+@app.route('/news', methods=['GET', 'POST'])
+def news():
+    # we call the api and get the results and pass them to the return inorder to render them to the front-end
+    return render_template('news.html', subtitle='news', text='this is the news page')
 
 
 if __name__ == '__main__':
