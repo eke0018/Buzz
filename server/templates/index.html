@@ -74,6 +74,9 @@
       <li class="nav-item">
         <a class="nav-link" href="{{url_for('blogs')}}">Blogs</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('weather')}}">Weather</a>
+      </li>
       {% if not current_user.is_authenticated %}
     <li class="nav-item">
       <a class="nav-link" href="{{url_for('register')}}">SignIn</a>
@@ -130,7 +133,7 @@
           </div>
           <div class="card_col_two">
             <div class="card_title_row">
-              <p class="news_card_title">{{ page.title }}</p>
+              <a href="news.html?title={{ page.title }}&author={{ page.author }}&date={{ page.date }}&text={{ page.text | urlencode }}&image_url={{ page.image_url }}" class="news_card_title">{{ page.title }}</a>
               <p class="news_card_subtit">
                 | By: {{ page.author }} | Date: {{ page.date }}
               </p>

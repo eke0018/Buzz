@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required, UserMixin
-from api_handler import get_pages
+from api_handler import get_pages, location, get_weather
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -90,6 +90,7 @@ class NewsArticle(db.Model):
 @app.route('/home')
 def home_page():
     pages = get_pages()
+
     # return render_template('index.html', pages=pages)
     return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages)
 
@@ -162,6 +163,21 @@ def logout():
 @login_required
 def blogs():
     return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
+
+
+@app.route('/weather')
+def weather():
+    weather_data = get_weather()
+    print(weather_data)
+    return render_template('weather.html', subtitle='Weather',
+                           text='This is the weather page',
+                           weather_data=weather_data)
+
+
+@app.route('/news', methods=['GET', 'POST'])
+def news():
+    # we call the api and get the results and pass them to the return inorder to render them to the front-end
+    return render_template('news.html', subtitle='news', text='this is the news page')
 
 
 if __name__ == '__main__':
