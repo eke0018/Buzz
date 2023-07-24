@@ -1,6 +1,4 @@
-from flask import Flask, render_template, url_for, request
-from flask import Flask, render_template, url_for, flash, redirect
-from sqlalchemy import create_engine
+from flask import Flask, render_template, url_for, request, flash, redirect, request
 # this these are the forms that we are using
 from forms import RegistrationForm, NewsArticleForm, LoginForm
 from flask_behind_proxy import FlaskBehindProxy
@@ -12,10 +10,11 @@ from flask_login import LoginManager, current_user, logout_user, login_user
 from api_handler import get_pages
 import pymysql.cursors  
 from sqlalchemy import create_engine
-# import os
+import random
+import os
 # specifying tyhe directory names
-# TEMPLATE_DIR = os.path.abspath('../templates')
-# STATIC_DIR = os.path.abspath('../static')
+#TEMPLATE_DIR = os.path.abspath('../templates')
+#STATIC_DIR = os.path.abspath('../static')
 
 
 app = Flask(__name__)
@@ -53,6 +52,7 @@ app.config['SECRET_KEY'] = '5a063a9f5f7a1769407c2c2066c5023e'
 # User model
 
 # User model
+
 
 
 # class User(db.Model):
@@ -171,11 +171,36 @@ def logout():
 @app.route('/blogs', methods=['POST', 'GET'])
 def blogs():
     return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
+#this handles everything with the wordle game
+# @app.route('/buzzgame')
+# def worlde():
+#     return render_template('worlde.html')
 
-@app.route('/worlde')
-def worlde():
-    return render_template('worlde.html', subtitle='worlde', text='This is the worlde page')
+def generate_random_word():
+    # Replace this with your logic to get a random word
+    word_list = ["apple", "banana", "cherry", "date", "elderberry"]
+    return random.choice(word_list)
+
+def check_guess(target_word, user_guess):
+    # Compare user_guess with target_word and provide feedback (e.g., number of correct letters)
+    # Replace this with your logic to check the user's guess
+    if len(user_guess) != len(target_word):
+        return "Invalid guess. Guess should be {} characters long.".format(len(target_word))
+
+    num_correct_letters = sum(c1 == c2 for c1, c2 in zip(target_word, user_guess))
+    return "{} out of {} letters are correct.".format(num_correct_letters, len(target_word))
+
+
+@app.route('/wordle', methods=['GET', 'POST'])
+def wordle():
+    if request.method == 'POST':
+        target_word = generate_random_word()
+        user_guess = request.form.get('user_guess', '').lower()
+        feedback = check_guess(target_word, user_guess)
+        return render_template('worlde.html', feedback=feedback)
+    return render_template('worlde.html')
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5010)
+    
