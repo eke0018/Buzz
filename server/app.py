@@ -10,6 +10,7 @@ from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required, UserMixin
 from api_handler import get_pages, location, get_weather
+from urllib.parse import unquote
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -120,12 +121,24 @@ def register():
 def profile():
     return render_template('profile.html', subtitle='profile_page', text='info on the user')
 
+@app.route('/news')
+def view_article():
+    title = request.args.get('title')
+    author = request.args.get('author')
+    date = request.args.get('date')
+    text = request.args.get('text')
+    text = unquote(text)
+    image_url = request.args.get('image_url')
+
+    return render_template('news.html', title=title, author=author, date=date, text=text, image_url=image_url)
+
 
 # Login and logout logic
 
 
 @login_manager.user_loader
 def load_user(user_id):
+
     # Load the user object from the database based on the user_id
     return User.query.get(int(user_id))
 
