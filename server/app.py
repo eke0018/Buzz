@@ -191,8 +191,8 @@ def check_guess(target_word, user_guess):
     return "{} out of {} letters are correct.".format(num_correct_letters, len(target_word))
 
 
-@app.route('/wordle', methods=['GET', 'POST'])
-def wordle():
+@app.route('/worlde', methods=['GET', 'POST'])
+def worlde():
     if request.method == 'POST':
         target_word = generate_random_word()
         user_guess = request.form.get('user_guess', '').lower()
