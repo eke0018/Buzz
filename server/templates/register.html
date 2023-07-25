@@ -73,9 +73,7 @@
       </button>
       </ul>
       
-    </ul>
-  
-        
+    </ul>   
     
     </div>
   </nav>
@@ -129,6 +127,24 @@
               {% else %} {{ form.username(class="form-control form-control-lg")
               }} {% endif %}
             </div>
+
+            <div class="form-group">
+              {{ form.interests.label(class="form-control-label") }} {%
+              if form.interests.errors %} {{
+              form.interests(class="form-control form-control-lg
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.interests.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.interests(class="form-control
+              form-control-lg") }} {% endif %}
+            </div>
+
+
+
+
             <div class="form-group">
               {{ form.password.label(class="form-control-label") }} {% if
               form.password.errors %} {{ form.password(class="form-control
@@ -154,7 +170,7 @@
               {% else %} {{ form.confirm_password(class="form-control
               form-control-lg") }} {% endif %}
             </div>
-            <div class="register_info_topics">
+            <!-- <div class="register_info_topics">
               <label for="topic">Choose a Topic:</label>
               <select name="topic" id="topic" multiple>
                 <option value="volvo">Health</option>
@@ -162,7 +178,7 @@
                 <option value="opel">Popstarts</option>
                 <option value="audi">Movies</option>
               </select>
-            </div>
+            </div> -->
           </fieldset>
           <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}

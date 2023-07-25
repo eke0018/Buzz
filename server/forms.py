@@ -9,6 +9,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
+    interests = StringField('Interests')
     submit = SubmitField('Sign Up')
 
 
@@ -17,6 +18,7 @@ class NewsArticleForm(FlaskForm):
                         DataRequired(), Length(min=2, max=40)])
     content = TextAreaField('Content', validators=[DataRequired()])
     image = StringField('Image', validators=[DataRequired()])
+    submit = SubmitField('Create Blog')
 
 
 class LoginForm(FlaskForm):

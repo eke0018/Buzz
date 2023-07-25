@@ -9,7 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # helps me get the current user and check if they are loggedInand then display pages accordingly
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required, UserMixin
-from api_handler import get_pages, location, get_weather
+from api_handler import get_pages, location, get_weather, render_news_by_interests
+# from flask_migrate import Migrate
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -19,7 +20,7 @@ from api_handler import get_pages, location, get_weather
 app = Flask(__name__)
 
 # database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///store.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///new_db01.db'
 db = SQLAlchemy(app)
 
 # helps with redirects
@@ -35,6 +36,10 @@ app.config['SECRET_KEY'] = '5a063a9f5f7a1769407c2c2066c5023e'
 # I will have these models as a separate file/module that we will need to import
 # User model
 
+
+# helps update models(make migrations) whenever I make changes to the models
+# migrate = Migrate(app, db)
+
 # User model
 
 
@@ -43,9 +48,11 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=False, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     is_active = db.Column(db.Boolean, default=True)
+    # added this field so the users can enter their interests
+    interests = db.Column(db.String(400))
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+        return f"User('{self.username}', '{self.interests}')"
 
     def get_id(self):
         return str(self.id)
@@ -89,7 +96,12 @@ class NewsArticle(db.Model):
 @app.route('/')
 @app.route('/home')
 def home_page():
-    pages = get_pages()
+
+    # Run either get pages or render_news_by_interests
+    if current_user.is_authenticated:
+        pages = render_news_by_interests(current_user.interests)
+    else:
+        pages = get_pages()
 
     # return render_template('index.html', pages=pages)
     return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages)
@@ -97,12 +109,15 @@ def home_page():
 # to create more pages we basically define a url route and then define the function for that
 
 
-@app.route('/register', methods=['Get', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():  # checks if entries are valid
         # Create a new User instance with the form data
-        user = User(username=form.username.data, password=form.password.data)
+        # I added the interests entered by the user from the front-end
+        print(form.interests.data)
+        user = User(username=form.username.data,
+                    password=form.password.data, interests=form.interests.data)
 
         # Add the user to the database session
         db.session.add(user)
@@ -162,9 +177,50 @@ def logout():
 @app.route('/blogs', methods=['POST', 'GET'])
 @login_required
 def blogs():
-    return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
+    form = NewsArticleForm()
+    if form.validate_on_submit():
+        news_article = NewsArticle(
+            title=form.title.data, content=form.content.data, image=form.image.data)
+        db.session.add(news_article)
+        db.session.commit()
+        flash('News article created successfully!', 'success')
+        return redirect(url_for('blogs'))
+
+    # Retrieve all news articles
+    articles = NewsArticle.query.all()
+    return render_template('Blogs.html', subtitle='Blogs', form=form, articles=articles)
+
+# updates an already existing blog
 
 
+@app.route('/edit_article/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_article(id):
+    article = NewsArticle.query.get_or_404(id)
+    form = NewsArticleForm(obj=article)  # prepopulates the article form
+    if form.validate_on_submit():
+        article.title = form.title.data
+        article.content = form.content.data
+        article.image = form.image.data
+        db.session.commit()
+        flash('News article has been successfully updated!', 'success')
+        return redirect(url_for('blogs'))
+
+    return render_template('edit_blog.html', form=form, subtitle='Edit Article', text='Edit news article')
+
+
+# deletes an existing blog in the database
+@app.route('/delete_article/<int:id>', methods=['POST'])
+@login_required
+def delete_article(id):
+    article = NewsArticle.query.get_or_404(id)
+    db.session.delete(article)
+    db.session.commit()
+    flash('News article has been successfully deleted!', 'success')
+    return redirect(url_for('news'))
+
+
+# This is for the weather
 @app.route('/weather')
 def weather():
     weather_data = get_weather()
@@ -181,4 +237,6 @@ def news():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5010)
+    with app.app_context():
+        db.create_all()  # creates all tables
+    app.run(debug=True, port=5041)
