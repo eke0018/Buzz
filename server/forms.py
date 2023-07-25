@@ -18,6 +18,7 @@ class NewsArticleForm(FlaskForm):
                         DataRequired(), Length(min=2, max=40)])
     content = TextAreaField('Content', validators=[DataRequired()])
     image = StringField('Image', validators=[DataRequired()])
+    submit = SubmitField('Create Blog')
 
 
 class LoginForm(FlaskForm):

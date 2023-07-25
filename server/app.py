@@ -20,7 +20,7 @@ from api_handler import get_pages, location, get_weather, render_news_by_interes
 app = Flask(__name__)
 
 # database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///new_db.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///new_db01.db'
 db = SQLAlchemy(app)
 
 # helps with redirects
@@ -177,9 +177,50 @@ def logout():
 @app.route('/blogs', methods=['POST', 'GET'])
 @login_required
 def blogs():
-    return render_template('Blogs.html', subtitle='Blogs', text='This is the blogs page')
+    form = NewsArticleForm()
+    if form.validate_on_submit():
+        news_article = NewsArticle(
+            title=form.title.data, content=form.content.data, image=form.image.data)
+        db.session.add(news_article)
+        db.session.commit()
+        flash('News article created successfully!', 'success')
+        return redirect(url_for('blogs'))
+
+    # Retrieve all news articles
+    articles = NewsArticle.query.all()
+    return render_template('Blogs.html', subtitle='Blogs', form=form, articles=articles)
+
+# updates an already existing blog
 
 
+@app.route('/edit_article/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_article(id):
+    article = NewsArticle.query.get_or_404(id)
+    form = NewsArticleForm(obj=article)  # prepopulates the article form
+    if form.validate_on_submit():
+        article.title = form.title.data
+        article.content = form.content.data
+        article.image = form.image.data
+        db.session.commit()
+        flash('News article has been successfully updated!', 'success')
+        return redirect(url_for('blogs'))
+
+    return render_template('edit_blog.html', form=form, subtitle='Edit Article', text='Edit news article')
+
+
+# deletes an existing blog in the database
+@app.route('/delete_article/<int:id>', methods=['POST'])
+@login_required
+def delete_article(id):
+    article = NewsArticle.query.get_or_404(id)
+    db.session.delete(article)
+    db.session.commit()
+    flash('News article has been successfully deleted!', 'success')
+    return redirect(url_for('news'))
+
+
+# This is for the weather
 @app.route('/weather')
 def weather():
     weather_data = get_weather()
@@ -196,4 +237,6 @@ def news():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5040)
+    with app.app_context():
+        db.create_all()  # creates all tables
+    app.run(debug=True, port=5041)
