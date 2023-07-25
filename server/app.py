@@ -60,6 +60,14 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
+    
+class SavedArticle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
 
 
 with app.app_context():
@@ -92,13 +100,6 @@ class NewsArticle(db.Model):
     def __repr__(self):
         return f'<NewsArticle {self.id}>'
     
-class SavedArticle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    author = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.String(50), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
 
 
 
@@ -114,7 +115,8 @@ def home_page():
         pages = get_pages()
 
     # return render_template('index.html', pages=pages)
-    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages)
+    saved_articles = SavedArticle.query.limit(5).all()
+    return render_template('index.html', subtitle='Home Page', text='This is the home page', pages=pages, saved_articles=saved_articles)
 
 # to create more pages we basically define a url route and then define the function for that
 
@@ -216,16 +218,18 @@ def weather():
 @app.route('/save_article', methods=['POST'])
 def save_article():
     if request.method == 'POST':
-        title = request.args.get('title')
-        author = request.args.get('author')
-        date = request.args.get('date')
-        text = request.args.get('text')
+        title = request.form['title']
+        author = request.form['author']
+        date = request.form['date']
+        text = request.form['text']
         text = unquote(text)
-        image_url = request.args.get('image_url')
+        image_url = request.form['image_url']
     
     article = SavedArticle(title=title, author=author, date=date, text=text, image_url=image_url)
     db.session.add(article)
     db.session.commit()
+
+    return redirect(request.referrer)
 
 
 

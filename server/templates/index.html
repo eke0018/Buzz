@@ -138,19 +138,24 @@
                 | By: {{ page.author }} | Date: {{ page.date }}
               </p>
             </div>
-            <p class="news_card_preview">{{ page.text }} - {{page.image_url}}</p>
+            <p class="news_card_preview">{{ page.text }} - {{ page.image_url }}</p>
           </div>
           <div class="card_col_three">
-            <button>
-              <a> href="{{ url_for('view_article', title=page.title, author=page.author, date=page.date, text=page.text | urlencode, image_url=page.image_url) }}"
+            <form method="POST" action="{{ url_for('save_article') }}">
+              <input type="hidden" name="title" value="{{ page.title }}">
+              <input type="hidden" name="author" value="{{ page.author }}">
+              <input type="hidden" name="date" value="{{ page.date }}">
+              <input type="hidden" name="text" value="{{ page.text }}">
+              <input type="hidden" name="image_url" value="{{ page.image_url }}">
+              <button type="submit">
                 <img src="../static/images/save.png" alt="save" />
-              </a>
-            </button>
+              </button>
+            </form>
           </div>
         </div>
         {% endfor %}
-        
       </div>
+    </div>    
       <div class="col_two">
           <div class="post_container">
             <p class="feed_title">Your Feed</p>
@@ -174,32 +179,17 @@
               </div>
                 </div>
             </div>
-         
-          <div class="saved_articles">
-            <p class="saved_title">Saved Buzzes</p>
-            <div class="saved_scroll">
-              <div class="saved_card">
-                <button><img class="saved_img" src="../static/images/adminnews.jpg" alt="savedimg"/></button>
-                <p class="saved_sub">How To eat...</p>
-              </div>
-              <div class="saved_card">
-                <button><img class="saved_img" src="../static/images/adminnews.jpg" alt="savedimg"/></button>
-                <p class="saved_sub">How To eat...</p>
-              </div>
-              <div class="saved_card">
-                <button><img class="saved_img" src="../static/images/adminnews.jpg" alt="savedimg"/></button>
-                <p class="saved_sub">How To eat...</p>
-              </div>
-              <div class="saved_card">
-                <button><img class="saved_img" src="../static/images/adminnews.jpg" alt="savedimg"/></button>
-                <p class="saved_sub">How To eat...</p>
-              </div>
-              <div class="saved_card">
-                <button><img class="saved_img" src="../static/images/adminnews.jpg" alt="savedimg"/></button>
-                <p class="saved_sub">How To eat...</p>
-              </div>
+        <div class="saved_articles">
+          <p class="saved_title">Saved Buzzes</p>
+          <div class="saved_scroll">
+            {% for article in saved_articles %}
+            <div class="saved_card">
+              <button><img class="saved_img" src="{{ article.image_url }}" alt="savedimage"/></button>
+              <a href="{{ url_for('view_article', title=article.title, author=article.author, date=article.date, text=article.text | urlencode, image_url=article.image_url) }}" class="saved_sub">{{ article.title }}</a>
             </div>
+            {% endfor %}
           </div>
+        </div>
     </div>
   </div>
   <div class="footer">
