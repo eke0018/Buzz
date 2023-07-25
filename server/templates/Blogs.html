@@ -104,14 +104,32 @@
         <p class="your_title">Your Blogs</p>
         <hr class='section_break_feed'></hr>
         <!-- this is where I will render the blogs -->
-        {% for article in articles%}
+        
         <div class="your_scroll">
-          <div class="your_cards">
+          {% for article in articles%}
+          <!-- <div class="your_cards">
             <p class="your_cards_title">{{article.title}}</p>
             <p class="your_cards_details">{{article.content}}</p>
-          </div>  
+            <div class="below">
+              <span><a>Edit</a></span>
+              <span><a>Delete</a></span>
+            </div>
+          </div>  -->
+         
+
+        <div class="your_cards" style="position: relative;">
+          <p class="your_cards_title">{{article.title}}</p>
+          <p class="your_cards_details">{{article.content}}</p>
+          <div class="below" style="position: absolute; bottom: 0; right: 0; padding-bottom: 8px; padding-right: 7px;">
+              <span style="background-color: #007bff; color: #fff; padding: 5px 10px; margin-right: 5px; cursor: pointer; border-radius: 3px; text-decoration: none;">
+                  <a style="text-decoration: none"; href="{{url_for('edit_article', id=article.id)}}">Edit</a>
+              </span>
+              <span style="background-color: #dc3545; color: #fff; padding: 5px 10px; cursor: pointer; border-radius: 3px; "><a>Delete</a></span>
+          </div>     
       </div>
-        {%endfor%}
+          {%endfor%}
+      </div>
+      
         
       </div>
     </div>
