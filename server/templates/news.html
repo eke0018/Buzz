@@ -3,12 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News Details</title>
+  <title>News Article</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+      background-color: #93acb5;
+      color: #fff;
+      padding: 5px 10px;
+      display: inline-block;
+    }
+    .meta-info {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      text-align: left;
+    }
+    .highlight-top {
+      background-color: #93acb5;
+      color: #fff;
+      padding: 5px 10px;
+      display: inline-block;
+    }
+    .highlight-bottom {
+      background-color: #93acb5;
+      height: 20px;
+      display: block;
+    }
+    .footer {
+      width: 100%;
+      height: 185px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #93acb5;
+    }
+  </style>
 </head>
 <body>
-  <h1>{{ title }}</h1>
+  <h1 class="highlight-top">{{ title }}</h1>
   <img src="{{ image_url }}" alt="news" />
-  <p>| By: {{ author }} | Date: {{ date }}</p>
-  <p>{{ text }}</p>
+  <div class="meta-info">
+    <span>Date: {{ date }}</span> |
+    <span>By: {{ author }}</span>
+  </div>
+  <p>
+    {{ text }}
+  </p>
+  <div class="highlight-bottom"></div>
+  <div class="footer">
+    <img src="../static/images/buzzlogo.png" alt="logo"/>
+    <p>© 2023 SEO. All rights reserved.</p>
+  </div>
 </body>
 </html>
+

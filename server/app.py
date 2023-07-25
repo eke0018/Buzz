@@ -11,6 +11,7 @@ from datetime import datetime
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required, UserMixin
 from api_handler import get_pages, location, get_weather, render_news_by_interests
 # from flask_migrate import Migrate
+from urllib.parse import unquote
 # import os
 # specifying tyhe directory names
 # TEMPLATE_DIR = os.path.abspath('../templates')
@@ -135,12 +136,24 @@ def register():
 def profile():
     return render_template('profile.html', subtitle='profile_page', text='info on the user')
 
+@app.route('/news')
+def view_article():
+    title = request.args.get('title')
+    author = request.args.get('author')
+    date = request.args.get('date')
+    text = request.args.get('text')
+    text = unquote(text)
+    image_url = request.args.get('image_url')
+
+    return render_template('news.html', title=title, author=author, date=date, text=text, image_url=image_url)
+
 
 # Login and logout logic
 
 
 @login_manager.user_loader
 def load_user(user_id):
+
     # Load the user object from the database based on the user_id
     return User.query.get(int(user_id))
 
@@ -230,10 +243,10 @@ def weather():
                            weather_data=weather_data)
 
 
-@app.route('/news', methods=['GET', 'POST'])
+'''@app.route('/news', methods=['GET', 'POST'])
 def news():
     # we call the api and get the results and pass them to the return inorder to render them to the front-end
-    return render_template('news.html', subtitle='news', text='this is the news page')
+    return render_template('news.html', subtitle='news', text='this is the news page')'''
 
 
 if __name__ == '__main__':
