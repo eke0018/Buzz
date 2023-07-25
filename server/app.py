@@ -196,6 +196,7 @@ def blogs():
 @app.route('/edit_article/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_article(id):
+    print(id)
     article = NewsArticle.query.get_or_404(id)
     form = NewsArticleForm(obj=article)  # prepopulates the article form
     if form.validate_on_submit():
