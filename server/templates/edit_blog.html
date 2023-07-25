@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %}
+<h2>{{ subtitle }}</h2>
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    {{ form.title.label }} {{ form.title(size=20, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ form.content.label }} {{ form.content(class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ form.image.label }} {{ form.image(class="form-control") }}
+  </div>
+  <div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
+</form>
+<form
+  method="POST"
+  action="{{ url_for('delete_article', article_id=article.id) }}"
+>
+  {{ csrf_token() }}
+  <button type="submit" class="btn btn-danger">Delete Article</button>
+</form>
+{% endblock %}

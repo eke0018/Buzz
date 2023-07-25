@@ -49,7 +49,7 @@
       <div class="add_blog_popup">
         <div class="col_one_pop">
           <img src="{{ url_for('static', filename='images/adminnews.jpg') }}" alt="">
-          <form action="" method="post" class="blog_form">
+          <!-- <form action="" method="post" class="blog_form">
             <div class="blog_info">
               <input placeholder="Enter Title" type="name" name="buzzTitle" id="buzzTitle" required>
             </div>
@@ -59,7 +59,23 @@
             <div class="blog_info_btn">
               <input type="submit" value="Save">
             </div>
-          </form>
+          </form> -->
+          <form method="POST" enctype="multipart/form-data" class="blog_form">
+            {{ form.hidden_tag() }}
+            <div class="form-group blog_info">
+                {{ form.title.label }} {{ form.title(size=20, class="form-control ") }}
+            </div>
+            <div class="form-group">
+                {{ form.content.label }} {{ form.content(class="form-control blog_info blog_info_details") }}
+            </div>
+            <div class="form-group">
+                {{ form.image.label }} {{ form.image(class="form-control") }}
+            </div>
+            <div class="form-group blog_info_btn">
+                {{ form.submit(class="btn btn-primary blog_info_btn") }}
+            </div>
+        </form>
+          
         </div>
         <div class="col_two_pop">
           <button onclick="close_blog_popup()">
@@ -87,12 +103,16 @@
       <div class="your_blogs">
         <p class="your_title">Your Blogs</p>
         <hr class='section_break_feed'></hr>
+        <!-- this is where I will render the blogs -->
+        {% for article in articles%}
         <div class="your_scroll">
-            <div class="your_cards">
-              <p class="your_cards_title">Post TBD</p>
-              <p class="your_cards_details">Text Text TextText Text TextText Text TextText Text TextText Text TextText Text TextText Text TextText Text TextText Text TextText Text TextText Text Text...</p>
-            </div>  
-        </div>
+          <div class="your_cards">
+            <p class="your_cards_title">{{article.title}}</p>
+            <p class="your_cards_details">{{article.content}}</p>
+          </div>  
+      </div>
+        {%endfor%}
+        
       </div>
     </div>
     <div class="blog_img">
