@@ -202,11 +202,11 @@ def weather():
                            weather_data=weather_data)
 
 
-@app.route('/news', methods=['GET', 'POST'])
+'''@app.route('/news', methods=['GET', 'POST'])
 def news():
     # we call the api and get the results and pass them to the return inorder to render them to the front-end
-    return render_template('news.html', subtitle='news', text='this is the news page')
+    return render_template('news.html', subtitle='news', text='this is the news page')'''
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5040)
+    app.run(debug=True, port=5010)
