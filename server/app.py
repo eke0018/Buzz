@@ -91,6 +91,15 @@ class NewsArticle(db.Model):
 
     def __repr__(self):
         return f'<NewsArticle {self.id}>'
+    
+class SavedArticle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+
 
 
 # routes section
@@ -148,6 +157,9 @@ def view_article():
     return render_template('news.html', title=title, author=author, date=date, text=text, image_url=image_url)
 
 
+
+
+
 # Login and logout logic
 
 
@@ -201,11 +213,20 @@ def weather():
                            text='This is the weather page',
                            weather_data=weather_data)
 
+@app.route('/save_article', methods=['POST'])
+def save_article():
+    if request.method == 'POST':
+        title = request.args.get('title')
+        author = request.args.get('author')
+        date = request.args.get('date')
+        text = request.args.get('text')
+        text = unquote(text)
+        image_url = request.args.get('image_url')
+    
+    article = SavedArticle(title=title, author=author, date=date, text=text, image_url=image_url)
+    db.session.add(article)
+    db.session.commit()
 
-'''@app.route('/news', methods=['GET', 'POST'])
-def news():
-    # we call the api and get the results and pass them to the return inorder to render them to the front-end
-    return render_template('news.html', subtitle='news', text='this is the news page')'''
 
 
 if __name__ == '__main__':
