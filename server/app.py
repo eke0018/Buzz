@@ -176,29 +176,29 @@ def blogs():
 # def worlde():
 #     return render_template('worlde.html')
 
-def generate_random_word():
-    # Replace this with your logic to get a random word
-    word_list = ["apple", "banana", "cherry", "date", "elderberry"]
-    return random.choice(word_list)
+# def generate_random_word():
+#     # Replace this with your logic to get a random word
+#     word_list = ["apple", "banana", "cherry", "date", "elderberry"]
+#     return random.choice(word_list)
 
-def check_guess(target_word, user_guess):
-    # Compare user_guess with target_word and provide feedback (e.g., number of correct letters)
-    # Replace this with your logic to check the user's guess
-    if len(user_guess) != len(target_word):
-        return "Invalid guess. Guess should be {} characters long.".format(len(target_word))
+# def check_guess(target_word, user_guess):
+#     # Compare user_guess with target_word and provide feedback (e.g., number of correct letters)
+#     # Replace this with your logic to check the user's guess
+#     if len(user_guess) != len(target_word):
+#         return "Invalid guess. Guess should be {} characters long.".format(len(target_word))
 
-    num_correct_letters = sum(c1 == c2 for c1, c2 in zip(target_word, user_guess))
-    return "{} out of {} letters are correct.".format(num_correct_letters, len(target_word))
+#     num_correct_letters = sum(c1 == c2 for c1, c2 in zip(target_word, user_guess))
+#     return "{} out of {} letters are correct.".format(num_correct_letters, len(target_word))
 
 
-@app.route('/worlde', methods=['GET', 'POST'])
-def worlde():
-    if request.method == 'POST':
-        target_word = generate_random_word()
-        user_guess = request.form.get('user_guess', '').lower()
-        feedback = check_guess(target_word, user_guess)
-        return render_template('worlde.html', feedback=feedback)
-    return render_template('worlde.html')
+@app.route('/wordle')
+def wordle():
+    # if request.method == 'POST':
+    #     target_word = generate_random_word()
+    #     user_guess = request.form.get('user_guess', '').lower()
+    #     feedback = check_guess(target_word, user_guess)
+    #     return render_template('worlde.html', feedback=feedback)
+    return render_template('wordle.html')
 
 
 if __name__ == '__main__':
