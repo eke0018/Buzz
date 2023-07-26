@@ -59,8 +59,14 @@
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('blogs')}}">Blogs</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('weather')}}">Weather</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('wordle')}}">Wordle</a>
+          </li>
           {% if not current_user.is_authenticated %}
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="{{url_for('register')}}">SignIn</a>
         </li>
         {%endif%}
