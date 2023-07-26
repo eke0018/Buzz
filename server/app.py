@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, request
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, request, redirect
 # this these are the forms that we are using
 from forms import RegistrationForm, NewsArticleForm, LoginForm
 from flask_behind_proxy import FlaskBehindProxy
@@ -243,11 +242,20 @@ def weather():
                            text='This is the weather page',
                            weather_data=weather_data)
 
-
 '''@app.route('/news', methods=['GET', 'POST'])
 def news():
     # we call the api and get the results and pass them to the return inorder to render them to the front-end
     return render_template('news.html', subtitle='news', text='this is the news page')'''
+
+@app.route('/wordle')
+def wordle():
+    # if request.method == 'POST':
+    #     target_word = generate_random_word()
+    #     user_guess = request.form.get('user_guess', '').lower()
+    #     feedback = check_guess(target_word, user_guess)
+    #     return render_template('worlde.html', feedback=feedback)
+    return render_template('wordle.html')
+
 
 
 if __name__ == '__main__':
